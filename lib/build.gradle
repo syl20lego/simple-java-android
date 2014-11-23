@@ -24,8 +24,7 @@ task copyAndroidLibs(type: Copy) {
     }
 }
 
-task createJar(type: Jar) {
-//    destinationDir = new File(projectDir.absolutePath + 'libs')
+task createAndroidJar(type: Jar) {
     destinationDir = file 'libs/'
     archiveName = "android21.jar"
     from(zipTree('/Library/Android/sdk/platforms/android-21/android.jar')) {
@@ -34,5 +33,5 @@ task createJar(type: Jar) {
     dependsOn copyAndroidLibs
 }
 
-compileJava.dependsOn createJar
+compileJava.dependsOn createAndroidJar
 
