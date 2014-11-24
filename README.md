@@ -29,7 +29,6 @@ There are few limitations:
 
 *   You have to be careful not to use classes from Java SDK that are not supported on Android.
 *   It cannot support the different configuration, but for a java library Strategy is probably better.
-*   Hijacking the libs folder, ensure there is a .gitignore
 *   You need to compile first
 *   It's not a gradle plugin
 

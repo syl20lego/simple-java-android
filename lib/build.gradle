@@ -4,7 +4,7 @@ sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(dir: 'build/android', include: ['*.jar'])
     testCompile 'junit:junit:4.11'
     testCompile 'org.mockito:mockito-all:1.10.8'
     testCompile 'org.powermock:powermock-module-junit4:1.5.6'
@@ -12,26 +12,32 @@ dependencies {
     testCompile 'org.powermock:powermock-api-mockito:1.5.6'
 }
 
+Properties properties = new Properties()
+File propertiesFile = new File('local.properties')
+propertiesFile.withInputStream {
+    properties.load(it)
+}
+def sdk = properties.getProperty("sdk.dir")
+
 task copyAndroidLibs(type: Copy) {
     // Copy the contents of a Zip file
-    from(zipTree('/Library/Android/sdk/extras/google/m2repository/com/google/android/gms/play-services/5.0.89/play-services-5.0.89.aar')) {
+    from(zipTree(sdk + '/extras/google/m2repository/com/google/android/gms/play-services/5.0.89/play-services-5.0.89.aar')) {
         include 'classes.jar'
     }
     // Change the final jar name
-    into { 'libs' }
+    into { 'build/android' }
     rename { String fileName ->
         fileName.replace("classes.jar", "play-services-5.0.89.jar")
     }
 }
 
 task createAndroidJar(type: Jar) {
-    destinationDir = file 'libs/'
+    destinationDir = file 'build/android/'
     archiveName = "android21.jar"
-    from(zipTree('/Library/Android/sdk/platforms/android-21/android.jar')) {
+    from(zipTree(sdk + '/platforms/android-21/android.jar')) {
         include 'android/**'
     }
-    dependsOn copyAndroidLibs
 }
 
-compileJava.dependsOn createAndroidJar
+compileJava.dependsOn copyAndroidLibs, createAndroidJar
 
