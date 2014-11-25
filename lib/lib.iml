@@ -27,8 +27,8 @@
     <orderEntry type="jdk" jdkName="1.8 (1)" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="android21" level="project" />
-    <orderEntry type="library" exported="" name="facebook-3-19-0" level="project" />
-    <orderEntry type="library" exported="" name="play-services-5.0.89" level="project" />
+    <orderEntry type="library" exported="" name="classes84e3e6dd-f5c6-42bd-aa5c-06fa1ab56dfa" level="project" />
+    <orderEntry type="library" exported="" name="classesfc1694a7-3446-4ade-b615-b74a9646d1a7" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="junit-4.11" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="mockito-all-1.10.8" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="powermock-module-junit4-1.5.6" level="project" />

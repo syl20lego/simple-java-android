@@ -19,6 +19,7 @@ dependencies {
     aar ('com.facebook.android:facebook-android-sdk:3.19.0') {
         transitive = false
     }
+    aar files (sdk + '/extras/google/m2repository/com/google/android/gms/play-services/5.0.89/play-services-5.0.89.aar')
 
     testCompile 'junit:junit:4.11'
     testCompile 'org.mockito:mockito-all:1.10.8'
@@ -32,29 +33,15 @@ task copyARRLib(type:Copy) {
     into 'build/aar'
 }
 
-task convertARR(type: Copy) {
+task extractAar(type: Copy) {
     dependsOn copyARRLib
-    // Copy the contents of a Zip file
-    from(zipTree('build/aar/facebook-android-sdk-3.19.0.aar')) {
+    from(configurations.aar.collect { it.isDirectory() ? it : zipTree(it) }) {
         include 'classes.jar'
     }
-    // Change the final jar name
     into { 'build/android' }
     rename { String fileName ->
-        fileName.replace("classes.jar", "facebook-3-19-0.jar")
-    }
-}
-
-
-task copyAndroidLibs(type: Copy) {
-    // Copy the contents of a Zip file
-    from(zipTree(sdk + '/extras/google/m2repository/com/google/android/gms/play-services/5.0.89/play-services-5.0.89.aar')) {
-        include 'classes.jar'
-    }
-    // Change the final jar name
-    into { 'build/android' }
-    rename { String fileName ->
-        fileName.replace("classes.jar", "play-services-5.0.89.jar")
+        // TODO need to find how to preserve the artifact name
+        fileName.replace("classes.jar", "classes" + UUID.randomUUID() +".jar")
     }
 }
 
@@ -66,5 +53,5 @@ task createAndroidJar(type: Jar) {
     }
 }
 
-compileJava.dependsOn copyAndroidLibs, createAndroidJar, convertARR
+compileJava.dependsOn createAndroidJar, extractAar
 
