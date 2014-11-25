@@ -7,3 +7,6 @@ gradle-app.setting
 # Intellij
 *.iml
 .idea/
+
+# android plugin
+local.properties
