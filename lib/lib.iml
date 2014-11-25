@@ -27,6 +27,7 @@
     <orderEntry type="jdk" jdkName="1.8 (1)" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="android21" level="project" />
+    <orderEntry type="library" exported="" name="facebook-3-19-0" level="project" />
     <orderEntry type="library" exported="" name="play-services-5.0.89" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="junit-4.11" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="mockito-all-1.10.8" level="project" />

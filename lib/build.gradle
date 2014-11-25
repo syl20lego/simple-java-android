@@ -3,8 +3,23 @@ apply plugin: 'java'
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
+Properties properties = new Properties()
+File propertiesFile = new File(project.rootDir.absolutePath + '/local.properties')
+propertiesFile.withInputStream {
+    properties.load(it)
+}
+def sdk = properties.getProperty("sdk.dir")
+
+configurations {
+    aar
+}
+
 dependencies {
     compile fileTree(dir: 'build/android', include: ['*.jar'])
+    aar ('com.facebook.android:facebook-android-sdk:3.19.0') {
+        transitive = false
+    }
+
     testCompile 'junit:junit:4.11'
     testCompile 'org.mockito:mockito-all:1.10.8'
     testCompile 'org.powermock:powermock-module-junit4:1.5.6'
@@ -12,12 +27,24 @@ dependencies {
     testCompile 'org.powermock:powermock-api-mockito:1.5.6'
 }
 
-Properties properties = new Properties()
-File propertiesFile = new File(project.rootDir.absolutePath + '/local.properties')
-propertiesFile.withInputStream {
-    properties.load(it)
+task copyARRLib(type:Copy) {
+    from configurations.aar
+    into 'build/aar'
 }
-def sdk = properties.getProperty("sdk.dir")
+
+task convertARR(type: Copy) {
+    dependsOn copyARRLib
+    // Copy the contents of a Zip file
+    from(zipTree('build/aar/facebook-android-sdk-3.19.0.aar')) {
+        include 'classes.jar'
+    }
+    // Change the final jar name
+    into { 'build/android' }
+    rename { String fileName ->
+        fileName.replace("classes.jar", "facebook-3-19-0.jar")
+    }
+}
+
 
 task copyAndroidLibs(type: Copy) {
     // Copy the contents of a Zip file
@@ -39,5 +66,5 @@ task createAndroidJar(type: Jar) {
     }
 }
 
-compileJava.dependsOn copyAndroidLibs, createAndroidJar
+compileJava.dependsOn copyAndroidLibs, createAndroidJar, convertARR
 
